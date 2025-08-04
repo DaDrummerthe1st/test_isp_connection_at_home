@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from time import sleep
 import sqlite3
 from datetime import datetime
@@ -5,7 +6,7 @@ import subprocess
 import random
 from pathlib import Path
 
-HOMEDIR = Path.home()
+HO MEDIR = Path.home()
 DB_FILE = f"{HOMEDIR}/check_internet/test_isp_connection_at_home/ping_results.db"
 
 respondents = [
@@ -28,7 +29,7 @@ def init_db():
             timestamp TEXT NOT NULL,
             success INTEGER NOT NULL,
             rtt_ms FLOAT
-	        respondents TEXT NOT NULL
+	        respondents TEXT NOT NULL DEFAULT unknown
         )
     """)
     conn.commit()
@@ -38,7 +39,7 @@ def log_ping(success, rtt_ms, respondent):
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
     c.execute(
-        "INSERT INTO pings (timestamp, success, rtt_ms,respondent) VALUES (?, ?, ?, ?)",
+        "INSERT INTO pings (timestamp, success, rtt_ms, respondents) VALUES (?, ?, ?, ?)",
         (datetime.now().isoformat(), int(success), rtt_ms, respondent)
     )
     conn.commit()
@@ -67,11 +68,11 @@ def ping_host(host):
 
 def main():
     init_db()
-    while True:
-        random_respondent = respondents[random.randint(0,len(respondents)-1)]
-        success, rtt_ms, respondent = ping_host(random_respondent)
-        log_ping(success, rtt_ms, respondent)
-        print(f"{datetime.now().isoformat()} | Success: {success} | RTT: {rtt_ms} | {respondent}")
+    # while True:
+    random_respondent = respondents[random.randint(0,len(respondents)-1)]
+    success, rtt_ms, respondent = ping_host(random_respondent)
+    log_ping(success, rtt_ms, respondent)
+    print(f"{datetime.now().isoformat()} | Success: {success} | RTT: {rtt_ms} | {respondent}")
         # if success:
         #     sleep(60)
         # else:
