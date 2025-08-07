@@ -6,7 +6,7 @@ import subprocess
 import random
 from pathlib import Path
 
-HO MEDIR = Path.home()
+HOMEDIR = Path.home()
 DB_FILE = f"{HOMEDIR}/check_internet/test_isp_connection_at_home/ping_results.db"
 
 respondents = [
@@ -70,9 +70,9 @@ def main():
     init_db()
     # while True:
     random_respondent = respondents[random.randint(0,len(respondents)-1)]
-    success, rtt_ms, respondent = ping_host(random_respondent)
-    log_ping(success, rtt_ms, respondent)
-    print(f"{datetime.now().isoformat()} | Success: {success} | RTT: {rtt_ms} | {respondent}")
+    success, rtt_ms, _ = ping_host(random_respondent)
+    log_ping(success, rtt_ms, random_respondent)
+    print(f"{datetime.now().isoformat()} | Success: {success} | RTT: {rtt_ms} | {random_respondent}")
         # if success:
         #     sleep(60)
         # else:
